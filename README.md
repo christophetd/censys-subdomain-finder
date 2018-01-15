@@ -8,7 +8,7 @@ See it in action:
 $ python censys_subdomain_finder.py github.com
 
 [*] Searching Censys for subdomains of github.com
-[*] Found 42 unique subdomains of github.com in ~4.8 seconds
+[*] Found 42 unique subdomains of github.com in ~1.7 seconds
 
   - hq.github.com
   - talks.github.com
