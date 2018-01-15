@@ -12,7 +12,7 @@ import time
 def find_subdomains(domain, api_id, api_secret):
     try:
         censys_certificates = censys.certificates.CensysCertificates(api_id=api_id, api_secret=api_secret)
-        certificate_query = 'parsed.names: %s and tags.raw: trusted' % domain
+        certificate_query = 'parsed.names: %s' % domain
         certificates_search_results = censys_certificates.search(certificate_query, fields=['parsed.names'])
         
         # Flatten the result, and remove duplicates
