@@ -125,4 +125,4 @@ Should run on Python 2.7 and 3.5.
 
 The Censys API has a limit rate of 120 queries per 5 minutes window. Each invocation of this tool makes exactly one API call to Censys.
 
-Feel free to [open an issue](https://github.com/christophetd/censys-subdomain-finder/issues/new) for suggestions or remarks.
+Feel free to [open an issue](https://github.com/christophetd/censys-subdomain-finder/issues/new) or to [tweet @christophetd](https://twitter.com/christophetd/) for suggestions or remarks.
