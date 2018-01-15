@@ -6,6 +6,7 @@ import censys
 import sys
 import cli
 import os
+import time
 
 # Finds subdomains of a domain using Censys API
 def find_subdomains(domain, api_id, api_secret):
@@ -32,15 +33,16 @@ def filter_subdomains(domain, subdomains):
 	return [ subdomain for subdomain in subdomains if '*' not in subdomain and subdomain.endswith(domain) ]
 
 # Prints the list of found subdomains to stdout
-def print_subdomains(domain, subdomains):
+def print_subdomains(domain, subdomains, time_ellapsed):
     if len(subdomains) is 0:
         print('[-] Did not find any subdomain')
         return
 
-    print('[*] Found %d unique subdomain%s of %s' % (len(subdomains), 's' if len(subdomains) > 1 else '', domain))
-	
+    print('[*] Found %d unique subdomain%s of %s in ~%s seconds\n' % (len(subdomains), 's' if len(subdomains) > 1 else '', domain, str(time_ellapsed)))
     for subdomain in subdomains:
         print('  - ' + subdomain)
+    
+    print('')
 
 # Saves the list of found subdomains to an output file
 def save_subdomains_to_file(subdomains, output_file):
@@ -58,9 +60,12 @@ def save_subdomains_to_file(subdomains, output_file):
 
 def main(domain, output_file, censys_api_id, censys_api_secret):
     print('[*] Searching Censys for subdomains of %s' % domain)
+    start_time = time.time()
     subdomains = find_subdomains(domain, censys_api_id, censys_api_secret)
     subdomains = filter_subdomains(domain, subdomains)
-    print_subdomains(domain, subdomains)
+    end_time = time.time()
+    time_ellapsed = round(end_time - start_time, 1)
+    print_subdomains(domain, subdomains, time_ellapsed)
     save_subdomains_to_file(subdomains, output_file)
 
 if __name__ == "__main__":
