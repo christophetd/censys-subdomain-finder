@@ -114,6 +114,7 @@ optional arguments:
   --censys-api-secret CENSYS_API_SECRET
                         Censys API secret. Can also be defined using the
                         CENSYS_API_SECRET environment variable (default: None)
+  --allresults         Paginate through all results, this can take a significant amount of time, use cautiously.                     
 ```
 
 

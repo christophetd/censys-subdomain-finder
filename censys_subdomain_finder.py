@@ -7,26 +7,47 @@ import sys
 import cli
 import os
 import time
+import math
 
 # Finds subdomains of a domain using Censys API
-def find_subdomains(domain, api_id, api_secret):
+def find_subdomains(domain, api_id, api_secret,all_results):
+    max_results_to_return=10000
+    subdomains = []
+    page_num = 1
+    max_page = 1
+    sleep_seconds=10 #Arbitrary figure. Too much? not enough?
     try:
         censys_certificates = censys.certificates.CensysCertificates(api_id=api_id, api_secret=api_secret)
         certificate_query = 'parsed.names: %s' % domain
-        certificates_search_results = censys_certificates.search(certificate_query, fields=['parsed.names'])
-        
-        # Flatten the result, and remove duplicates
-        subdomains = []
-        for search_result in certificates_search_results:
-            subdomains.extend(search_result['parsed.names'])
-		
+        certificates_search_results=censys_certificates.metadata(certificate_query)
+
+        num_results=certificates_search_results.get("count")
+        if num_results > max_results_to_return:
+            if all_results:
+                max_page = math.ceil(num_results / max_results_to_return)
+                print("[-] This will return %d pages and will take some time due to API limitations."%(max_page))
+
+        while (page_num <= max_page):
+            print("[-] Now returning data from page %d with %d results per page"%(page_num,max_results_to_return))
+            certificates_search_results = censys_certificates.search(certificate_query,
+                                                                     fields=['parsed.names'], page=page_num,
+                                                                     max_records=max_results_to_return)
+            for search_result in certificates_search_results:
+                subdomains.extend(search_result['parsed.names'])
+            if max_page == 1:
+                #Only returning one page so just send it back
+                return set(subdomains)
+            if page_num > 1:
+                print("[-] Sleeping for %d seconds to avoid rate limiting"%(sleep_seconds))
+                time.sleep(sleep_seconds)
+            page_num = page_num + 1
         return set(subdomains)
     except censys.base.CensysUnauthorizedException:
         sys.stderr.write('[-] Your Censys credentials look invalid.\n')
         exit(1)
     except censys.base.CensysRateLimitExceededException:
-        sys.stderr.write('[-] Looks like you exceeded your Censys account limits rate. Exiting\n')
-        exit(1)
+        sys.stderr.write('[-] Looks like you exceeded your Censys account limits rate, returning as many as possible.\n')
+        return set(subdomains)
 
 # Filters out uninteresting subdomains
 def filter_subdomains(domain, subdomains):
@@ -46,10 +67,11 @@ def print_subdomains(domain, subdomains, time_ellapsed):
 
 # Saves the list of found subdomains to an output file
 def save_subdomains_to_file(subdomains, output_file):
+
     if output_file is None or len(subdomains) is 0:
         return
-
     try:
+        output_file = "output/%s" % (output_file)
         with open(output_file, 'w') as f:
             for subdomain in subdomains:
                 f.write(subdomain + '\n')
@@ -58,10 +80,10 @@ def save_subdomains_to_file(subdomains, output_file):
     except IOError as e:
         sys.stderr.write('[-] Unable to write to output file %s : %s\n' % (output_file, e))
 
-def main(domain, output_file, censys_api_id, censys_api_secret):
+def main(domain, output_file, censys_api_id, censys_api_secret,all_results=False):
     print('[*] Searching Censys for subdomains of %s' % domain)
     start_time = time.time()
-    subdomains = find_subdomains(domain, censys_api_id, censys_api_secret)
+    subdomains = find_subdomains(domain, censys_api_id, censys_api_secret,all_results)
     subdomains = filter_subdomains(domain, subdomains)
     end_time = time.time()
     time_ellapsed = round(end_time - start_time, 1)
@@ -73,6 +95,7 @@ if __name__ == "__main__":
 
     censys_api_id = None
     censys_api_secret = None
+    all_results=False
 
     if 'CENSYS_API_ID' in os.environ and 'CENSYS_API_SECRET' in os.environ:
         censys_api_id = os.environ['CENSYS_API_ID']
@@ -82,8 +105,11 @@ if __name__ == "__main__":
         censys_api_id = args.censys_api_id
         censys_api_secret = args.censys_api_secret
 
+    if args.all_results:
+        all_results=True
+
     if None in [ censys_api_id, censys_api_secret ]:
         sys.stderr.write('[!] Please set your Censys API ID and secret from your environment (CENSYS_API_ID and CENSYS_API_SECRET) or from the command line.\n')
         exit(1)
-		
-    main(args.domain, args.output_file, censys_api_id, censys_api_secret)
+
+    main(args.domain, args.output_file, censys_api_id, censys_api_secret, all_results)

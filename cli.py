@@ -9,7 +9,7 @@ parser.add_argument(
 
 parser.add_argument(
     '-o', '--output',
-    help = 'A file to output the list of subdomains to',
+    help = 'A file to output the list of subdomains to, will be created in output/',
     dest = 'output_file'
 )
 
@@ -23,4 +23,11 @@ parser.add_argument(
     '--censys-api-secret',
     help = 'Censys API secret. Can also be defined using the CENSYS_API_SECRET environment variable',
     dest = 'censys_api_secret'
+)
+
+parser.add_argument(
+    '--allresults',
+    help = 'Returns all results in a paginated format no matter what size',
+    dest='all_results',
+    action='store_true'
 )
