@@ -27,6 +27,10 @@ def find_subdomains(domain, api_id, api_secret):
     except censys.base.CensysRateLimitExceededException:
         sys.stderr.write('[-] Looks like you exceeded your Censys account limits rate. Exiting\n')
         exit(1)
+    except censys.base.CensysException as e:
+        # catch the Censys Base exception, example "only 1000 first results are available"
+        sys.stderr.write('[-] Something bad happened, ' + repr(e))
+        return set(subdomains)
 
 # Filters out uninteresting subdomains
 def filter_subdomains(domain, subdomains):
