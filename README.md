@@ -116,6 +116,17 @@ optional arguments:
                         CENSYS_API_SECRET environment variable (default: None)
 ```
 
+## Docker
+You can run this application as a docker container. To build the image you can run:
+`docker build -t censys_subdomain_finder .`
+1) Feel free to change the name of the image as you wish(-t my_censys_subfinder)
+2) Run the container
+   - Default will print usage: 
+   `docker run --rm censys_subdomain_finder`
+   - Scan github: 
+   `docker run --rm censys_subdomain_finder --censys-api-id [YOUR_API_ID] --censys-api-secret [CENSYS_SECRET] github.com`
+   - Scan github, write results to censys_github.txt(under your OS /path/local/dir):
+    `docker run --rm -v /path/to/local/dir:/output --censys-api-id [YOUR_API_ID] --censys-api-secret [CENSYS_SECRET] -o /output/censys_github.com.txt github.com`
 
 ## Compatibility
 
