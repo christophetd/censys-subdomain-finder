@@ -4,7 +4,7 @@ This is a tool to enumerate subdomains using the Certificate Transparency logs s
 
 See it in action:
 
-```
+```bash
 $ python censys_subdomain_finder.py github.com
 
 [*] Searching Censys for subdomains of github.com
@@ -57,30 +57,30 @@ $ python censys_subdomain_finder.py github.com
 
 ## Setup
 
-1) Register an account (free) on https://censys.io/register
-2) Browse to https://censys.io/account, and set two environment variables with your API ID and API secret
+1. Register an account (free) on <https://search.censys.io/register>
+2. Browse to <https://search.censys.io/account/api>, and set two environment variables with your API ID and API secret
 
-```
+```bash
 $ export CENSYS_API_ID=...
 $ export CENSYS_API_SECRET=...
 ```
 
-3) Clone the repository
+3. Clone the repository
 
-```
+```bash
 $ git clone https://github.com/christophetd/censys-subdomain-finder.git
 ```
 
-4) Install the dependencies
+4. Install the dependencies
 
-```
+```bash
 $ cd censys-subdomain-finder
 $ pip install -r requirements.txt
 ```
 
-5) Run the script on `example.com` to make sure everything works as expected.
+5. Run the script on `example.com` to make sure everything works as expected.
 
-```
+```bash
 $ python censys_subdomain_finder.py example.com
 
 [*] Searching Censys for subdomains of example.com
@@ -92,9 +92,10 @@ $ python censys_subdomain_finder.py example.com
   - example.com
   - support.example.com
 ```
+
 ## Usage
 
-```
+```bash
 usage: censys_subdomain_finder.py [-h] [-o OUTPUT_FILE]
                                   [--censys-api-id CENSYS_API_ID]
                                   [--censys-api-secret CENSYS_API_SECRET]
@@ -115,7 +116,6 @@ optional arguments:
                         Censys API secret. Can also be defined using the
                         CENSYS_API_SECRET environment variable (default: None)
 ```
-
 
 ## Compatibility
 
