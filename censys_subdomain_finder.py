@@ -8,12 +8,15 @@ import os
 import time
 
 # Finds subdomains of a domain using Censys API
-def find_subdomains(domain, api_id, api_secret):
+def find_subdomains(domain, api_id, api_secret, limit_results):
     try:
         censys_certificates = CensysCertificates(api_id=api_id, api_secret=api_secret)
         certificate_query = 'parsed.names: %s' % domain
-        certificates_search_results = censys_certificates.search(certificate_query, fields=['parsed.names'])
-        
+        if limit_results:
+            certificates_search_results = censys_certificates.search(certificate_query, fields=['parsed.names'], max_records=1000)
+        else:
+            certificates_search_results = censys_certificates.search(certificate_query, fields=['parsed.names'])
+
         # Flatten the result, and remove duplicates
         subdomains = []
         for search_result in certificates_search_results:
@@ -61,10 +64,10 @@ def save_subdomains_to_file(subdomains, output_file):
     except IOError as e:
         sys.stderr.write('[-] Unable to write to output file %s : %s\n' % (output_file, e))
 
-def main(domain, output_file, censys_api_id, censys_api_secret):
+def main(domain, output_file, censys_api_id, censys_api_secret, limit_results):
     print('[*] Searching Censys for subdomains of %s' % domain)
     start_time = time.time()
-    subdomains = find_subdomains(domain, censys_api_id, censys_api_secret)
+    subdomains = find_subdomains(domain, censys_api_id, censys_api_secret, limit_results)
     subdomains = filter_subdomains(domain, subdomains)
     end_time = time.time()
     time_ellapsed = round(end_time - start_time, 1)
@@ -85,8 +88,12 @@ if __name__ == "__main__":
         censys_api_id = args.censys_api_id
         censys_api_secret = args.censys_api_secret
 
+    limit_results = args.non_commercial
+    if limit_results:
+        print('[*] Applying non-commerical limits (1000 results at most)')
+
     if None in [ censys_api_id, censys_api_secret ]:
         sys.stderr.write('[!] Please set your Censys API ID and secret from your environment (CENSYS_API_ID and CENSYS_API_SECRET) or from the command line.\n')
         exit(1)
 		
-    main(args.domain, args.output_file, censys_api_id, censys_api_secret)
+    main(args.domain, args.output_file, censys_api_id, censys_api_secret, limit_results)
