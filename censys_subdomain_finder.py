@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-import censys.certificates
-import censys.ipv4
+from censys.search import CensysCertificates
 import censys
 import sys
 import cli
@@ -11,7 +10,7 @@ import time
 # Finds subdomains of a domain using Censys API
 def find_subdomains(domain, api_id, api_secret):
     try:
-        censys_certificates = censys.certificates.CensysCertificates(api_id=api_id, api_secret=api_secret)
+        censys_certificates = CensysCertificates(api_id=api_id, api_secret=api_secret)
         certificate_query = 'parsed.names: %s' % domain
         certificates_search_results = censys_certificates.search(certificate_query, fields=['parsed.names'])
         
@@ -21,13 +20,13 @@ def find_subdomains(domain, api_id, api_secret):
             subdomains.extend(search_result['parsed.names'])
 		
         return set(subdomains)
-    except censys.base.CensysUnauthorizedException:
+    except censys.common.exceptions.CensysUnauthorizedException:
         sys.stderr.write('[-] Your Censys credentials look invalid.\n')
         exit(1)
-    except censys.base.CensysRateLimitExceededException:
+    except censys.common.exceptions.CensysRateLimitExceededException:
         sys.stderr.write('[-] Looks like you exceeded your Censys account limits rate. Exiting\n')
         return set(subdomains)
-    except censys.base.CensysException as e:
+    except censys.common.exceptions.CensysException as e:
         # catch the Censys Base exception, example "only 1000 first results are available"
         sys.stderr.write('[-] Something bad happened, ' + repr(e))
         return set(subdomains)
