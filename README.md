@@ -61,38 +61,38 @@ $ python censys_subdomain_finder.py github.com
 2) Browse to https://censys.io/account, and set two environment variables with your API ID and API secret
 
 ```
-$ export CENSYS_API_ID=...
-$ export CENSYS_API_SECRET=...
+export CENSYS_API_ID=...
+export CENSYS_API_SECRET=...
 ```
 
 3) Clone the repository
 
 ```
-$ git clone https://github.com/christophetd/censys-subdomain-finder.git
+git clone https://github.com/christophetd/censys-subdomain-finder.git
 ```
 
-4) Install the dependencies
+4) Install the dependencies in a virtualenv
 
 ```
-$ cd censys-subdomain-finder
-$ pip install -r requirements.txt
+cd censys-subdomain-finder
+python3 -m venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
 
-5) Run the script on `example.com` to make sure everything works as expected.
-
-```
-$ python censys_subdomain_finder.py example.com
-
-[*] Searching Censys for subdomains of example.com
-[*] Found 5 unique subdomains of example.com
-
-  - products.example.com
-  - www.example.com
-  - dev.example.com
-  - example.com
-  - support.example.com
-```
 ## Usage
+
+Sample usage:
+
+```
+python censys_subdomain_finder.py example.com
+```
+
+Output the list of subdomains to a text file:
+
+```
+python censys_subdomain_finder.py example.com -o subdomains.txt
+```
 
 ```
 usage: censys_subdomain_finder.py [-h] [-o OUTPUT_FILE]
