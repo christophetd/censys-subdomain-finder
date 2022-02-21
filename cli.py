@@ -24,3 +24,11 @@ parser.add_argument(
     help = 'Censys API secret. Can also be defined using the CENSYS_API_SECRET environment variable',
     dest = 'censys_api_secret'
 )
+
+parser.add_argument(
+    '--commercial',
+    help = 'Don\'t limit search results (for commercial accounts)',
+    dest = 'commercial',
+    action='store_true',
+    default=False
+)

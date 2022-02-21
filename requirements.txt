@@ -1,2 +1,1 @@
-censys==2.0.0; python_version > '3.6'
-censys==0.0.8; python_version <= '3.6'
+censys==2.1.2
