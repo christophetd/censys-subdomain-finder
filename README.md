@@ -5,7 +5,7 @@ This is a tool to enumerate subdomains using the Certificate Transparency logs s
 See it in action:
 
 ```
-$ python censys_subdomain_finder.py github.com
+$ python censys-subdomain-finder.py github.com
 
 [*] Searching Censys for subdomains of github.com
 [*] Found 42 unique subdomains of github.com in ~1.7 seconds
@@ -85,17 +85,17 @@ pip install -r requirements.txt
 Sample usage:
 
 ```
-python censys_subdomain_finder.py example.com
+python censys-subdomain-finder.py example.com
 ```
 
 Output the list of subdomains to a text file:
 
 ```
-python censys_subdomain_finder.py example.com -o subdomains.txt
+python censys-subdomain-finder.py example.com -o subdomains.txt
 ```
 
 ```
-usage: censys_subdomain_finder.py [-h] [-o OUTPUT_FILE]
+usage: censys-subdomain-finder.py [-h] [-o OUTPUT_FILE]
                                   [--censys-api-id CENSYS_API_ID]
                                   [--censys-api-secret CENSYS_API_SECRET]
                                   domain
