@@ -7,13 +7,15 @@ import cli
 import os
 import time
 
+NON_COMMERCIAL_API_LIMIT = 1000
+
 # Finds subdomains of a domain using Censys API
 def find_subdomains(domain, api_id, api_secret, limit_results):
     try:
         censys_certificates = CensysCertificates(api_id=api_id, api_secret=api_secret)
         certificate_query = 'parsed.names: %s' % domain
         if limit_results:
-            certificates_search_results = censys_certificates.search(certificate_query, fields=['parsed.names'], max_records=1000)
+            certificates_search_results = censys_certificates.search(certificate_query, fields=['parsed.names'], max_records=NON_COMMERCIAL_API_LIMIT)
         else:
             certificates_search_results = censys_certificates.search(certificate_query, fields=['parsed.names'])
 
@@ -90,7 +92,7 @@ if __name__ == "__main__":
 
     limit_results = args.non_commercial
     if limit_results:
-        print('[*] Applying non-commerical limits (1000 results at most)')
+        print('[*] Applying non-commerical limits (' + NON_COMMERCIAL_API_LIMIT + ' results at most)')
 
     if None in [ censys_api_id, censys_api_secret ]:
         sys.stderr.write('[!] Please set your Censys API ID and secret from your environment (CENSYS_API_ID and CENSYS_API_SECRET) or from the command line.\n')
