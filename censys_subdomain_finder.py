@@ -90,9 +90,9 @@ if __name__ == "__main__":
         censys_api_id = args.censys_api_id
         censys_api_secret = args.censys_api_secret
 
-    limit_results = args.non_commercial
+    limit_results = not args.commercial
     if limit_results:
-        print('[*] Applying non-commerical limits (' + NON_COMMERCIAL_API_LIMIT + ' results at most)')
+        print('[*] Applying non-commerical limits (' + str(NON_COMMERCIAL_API_LIMIT) + ' results at most)')
 
     if None in [ censys_api_id, censys_api_secret ]:
         sys.stderr.write('[!] Please set your Censys API ID and secret from your environment (CENSYS_API_ID and CENSYS_API_SECRET) or from the command line.\n')

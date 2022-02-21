@@ -26,9 +26,9 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '--non-commercial',
-    help = 'For Censys non-commercial account, results should be limited',
-    dest = 'non_commercial',
+    '--commercial',
+    help = 'Don\'t limit search results (for commercial accounts)',
+    dest = 'commercial',
     action='store_true',
     default=False
 )
