@@ -75,7 +75,7 @@ git clone https://github.com/christophetd/censys-subdomain-finder.git
 
 ```
 cd censys-subdomain-finder
-python3 -m venv
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
