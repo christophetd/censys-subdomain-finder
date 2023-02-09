@@ -60,25 +60,33 @@ $ python censys-subdomain-finder.py github.com
 1) Register an account (free) on https://censys.io/register
 2) Browse to https://censys.io/account, and set two environment variables with your API ID and API secret:
 
-```shell
-export CENSYS_API_ID=...
-export CENSYS_API_SECRET=...
-```
+    ```shell
+    export CENSYS_API_ID=...
+    export CENSYS_API_SECRET=...
+    ```
+
+    Alternatively, you can use a `.env` file to store these values for persistence across uses:
+
+    ```shell
+    cp .env.template .env
+    ```
+
+    Then edit the `.env` file and set the values for `CENSYS_API_ID` and `CENSYS_API_SECRET`.
 
 3) Clone the repository:
 
-```shell
-git clone https://github.com/christophetd/censys-subdomain-finder.git
-```
+    ```shell
+    git clone https://github.com/christophetd/censys-subdomain-finder.git
+    ```
 
 4) Install the dependencies in a virtualenv:
 
-```shell
-cd censys-subdomain-finder
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
+    ```shell
+    cd censys-subdomain-finder
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    ```
 
 ## Usage
 
