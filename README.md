@@ -4,7 +4,7 @@ This is a tool to enumerate subdomains using the Certificate Transparency logs s
 
 See it in action:
 
-```
+```shell
 $ python censys-subdomain-finder.py github.com
 
 [*] Searching Censys for subdomains of github.com
@@ -58,43 +58,51 @@ $ python censys-subdomain-finder.py github.com
 ## Setup
 
 1) Register an account (free) on https://censys.io/register
-2) Browse to https://censys.io/account, and set two environment variables with your API ID and API secret
+2) Browse to https://censys.io/account, and set two environment variables with your API ID and API secret:
 
-```
-export CENSYS_API_ID=...
-export CENSYS_API_SECRET=...
-```
+    ```shell
+    export CENSYS_API_ID=...
+    export CENSYS_API_SECRET=...
+    ```
 
-3) Clone the repository
+    Alternatively, you can use a `.env` file to store these values for persistence across uses:
 
-```
-git clone https://github.com/christophetd/censys-subdomain-finder.git
-```
+    ```shell
+    cp .env.template .env
+    ```
 
-4) Install the dependencies in a virtualenv
+    Then edit the `.env` file and set the values for `CENSYS_API_ID` and `CENSYS_API_SECRET`.
 
-```
-cd censys-subdomain-finder
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
+3) Clone the repository:
+
+    ```shell
+    git clone https://github.com/christophetd/censys-subdomain-finder.git
+    ```
+
+4) Install the dependencies in a virtualenv:
+
+    ```shell
+    cd censys-subdomain-finder
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    ```
 
 ## Usage
 
 Sample usage:
 
-```
+```shell
 python censys-subdomain-finder.py example.com
 ```
 
 Output the list of subdomains to a text file:
 
-```
+```shell
 python censys-subdomain-finder.py example.com -o subdomains.txt
 ```
 
-```
+```shell
 usage: censys-subdomain-finder.py [-h] [-o OUTPUT_FILE]
                                   [--censys-api-id CENSYS_API_ID]
                                   [--censys-api-secret CENSYS_API_SECRET]

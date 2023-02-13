@@ -2,10 +2,13 @@
 
 from censys.search import CensysCertificates
 import censys
+from dotenv import load_dotenv
 import sys
 import cli
 import os
 import time
+
+load_dotenv()
 
 NON_COMMERCIAL_API_LIMIT = 1000
 
@@ -23,7 +26,7 @@ def find_subdomains(domain, api_id, api_secret, limit_results):
         subdomains = []
         for search_result in certificates_search_results:
             subdomains.extend(search_result['parsed.names'])
-		
+
         return set(subdomains)
     except censys.common.exceptions.CensysUnauthorizedException:
         sys.stderr.write('[-] Your Censys credentials look invalid.\n')
@@ -49,7 +52,7 @@ def print_subdomains(domain, subdomains, time_ellapsed):
     print('[*] Found %d unique subdomain%s of %s in ~%s seconds\n' % (len(subdomains), 's' if len(subdomains) > 1 else '', domain, str(time_ellapsed)))
     for subdomain in subdomains:
         print('  - ' + subdomain)
-    
+
     print('')
 
 # Saves the list of found subdomains to an output file
@@ -97,5 +100,5 @@ if __name__ == "__main__":
     if None in [ censys_api_id, censys_api_secret ]:
         sys.stderr.write('[!] Please set your Censys API ID and secret from your environment (CENSYS_API_ID and CENSYS_API_SECRET) or from the command line.\n')
         exit(1)
-		
+
     main(args.domain, args.output_file, censys_api_id, censys_api_secret, limit_results)
