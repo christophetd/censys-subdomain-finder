@@ -16,6 +16,10 @@ load_dotenv()
 
 USER_AGENT = f"{CensysCerts.DEFAULT_USER_AGENT} (censys-subdomain-finder; +https://github.com/christophetd/censys-subdomain-finder)"
 
+MAX_PER_PAGE = 100
+COMMUNITY_MAX_PAGES = 10
+MAX_PAGES = 50
+
 
 # Finds subdomains of a domain using Censys API
 def find_subdomains(domain, api_id, api_secret, limit_results):
@@ -26,11 +30,15 @@ def find_subdomains(domain, api_id, api_secret, limit_results):
         certificate_query = "names: %s" % domain
         if limit_results:
             certificates_search_results = censys_certificates.search(
-                certificate_query, fields=["names"], per_page=100, pages=10
+                certificate_query,
+                per_page=MAX_PER_PAGE,
+                pages=COMMUNITY_MAX_PAGES,
             )
         else:
             certificates_search_results = censys_certificates.search(
-                certificate_query, fields=["names"]
+                certificate_query,
+                per_page=MAX_PER_PAGE,
+                pages=MAX_PAGES
             )
 
         # Flatten the result, and remove duplicates
@@ -133,7 +141,7 @@ if __name__ == "__main__":
 
     limit_results = not args.commercial
     if limit_results:
-        print("[*] Applying non-commercial limits (1000 results at most)")
+        print(f"[*] Applying free plan limits ({MAX_PER_PAGE * COMMUNITY_MAX_PAGES} results at most)")
 
     if None in [censys_api_id, censys_api_secret]:
         sys.stderr.write(
