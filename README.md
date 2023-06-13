@@ -1,6 +1,6 @@
 # Censys subdomain finder
 
-This is a tool to enumerate subdomains using the Certificate Transparency logs stored by [Censys](https://censys.io). It should return any subdomain who has ever been issued a SSL certificate by a public CA.
+This is a tool to enumerate subdomains using the Certificate Transparency logs stored in [Censys Search](https://search.censys.io). It should return any subdomain who has ever been issued a SSL certificate by a public CA.
 
 See it in action:
 
@@ -57,8 +57,8 @@ $ python censys-subdomain-finder.py github.com
 
 ## Setup
 
-1) Register an account (free) on https://censys.io/register
-2) Browse to https://censys.io/account, and set two environment variables with your API ID and API secret:
+1. Register an account (free) on <https://search.censys.io/register>
+2. Browse to <https://search.censys.io/account>, and set two environment variables with your API ID and API secret:
 
     ```shell
     export CENSYS_API_ID=...
@@ -73,13 +73,13 @@ $ python censys-subdomain-finder.py github.com
 
     Then edit the `.env` file and set the values for `CENSYS_API_ID` and `CENSYS_API_SECRET`.
 
-3) Clone the repository:
+3. Clone the repository:
 
     ```shell
     git clone https://github.com/christophetd/censys-subdomain-finder.git
     ```
 
-4) Install the dependencies in a virtualenv:
+4. Install the dependencies in a virtualenv:
 
     ```shell
     cd censys-subdomain-finder
@@ -124,10 +124,9 @@ optional arguments:
                         CENSYS_API_SECRET environment variable (default: None)
 ```
 
-
 ## Compatibility
 
-Should run on Python 2.7 and 3.5.
+Should run on Python 3.7+.
 
 ## Notes
 
